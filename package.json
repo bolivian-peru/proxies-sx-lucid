@@ -1,0 +1,55 @@
+{
+  "name": "@proxies-sx/lucid-agents",
+  "version": "1.0.0",
+  "description": "Lucid Agents extension for Proxies.sx mobile proxies — x402 USDC micropayments, 6 countries, HTTP/SOCKS5",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "lucid-agents",
+    "proxy",
+    "mobile-proxy",
+    "x402",
+    "usdc",
+    "ai-agents",
+    "web-scraping",
+    "antidetect",
+    "proxies-sx",
+    "extension"
+  ],
+  "author": "Proxies.sx <dev@proxies.sx>",
+  "license": "MIT",
+  "homepage": "https://agents.proxies.sx",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bolivian-peru/proxies-sx-lucid"
+  },
+  "peerDependencies": {
+    "@lucid-agents/types": ">=1.7.0"
+  },
+  "devDependencies": {
+    "@lucid-agents/types": "^1.7.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
+  }
+}
