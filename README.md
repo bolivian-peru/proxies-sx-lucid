@@ -13,7 +13,7 @@ This extension adds `.proxy` to your Lucid agent runtime, giving any AI agent th
 | IPs | Real 4G/5G mobile carrier IPs |
 | Countries | US, DE, GB, FR, ES, PL |
 | Protocols | HTTP + SOCKS5 |
-| Pricing | $4/GB shared, $8/GB private |
+| Pricing | $4/GB |
 | Payment | USDC on Base or Solana |
 | Settlement | ~2s Base, ~400ms Solana |
 | Min purchase | $0.40 (0.1 GB) |
@@ -103,7 +103,7 @@ proxiesSx({
   defaultCountry: 'US',          // Default country code
   defaultTrafficGB: 1,           // Default traffic allocation
   defaultDurationSeconds: 3600,  // Default session duration (1 hour)
-  defaultTier: 'shared',         // 'shared' ($4/GB) or 'private' ($8/GB)
+  defaultTier: 'shared',         // 'shared' or 'private' — both $4/GB
   defaultNetwork: 'solana',      // 'base' or 'solana'
 })
 ```
@@ -166,7 +166,7 @@ Get current pricing info.
 ```typescript
 const pricing = await agent.proxy.getPricing();
 // pricing.shared.trafficPerGB → 4
-// pricing.private.trafficPerGB → 8
+// (all traffic is $4/GB — the response carries no separate private price)
 ```
 
 ## Standalone Client
