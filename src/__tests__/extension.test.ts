@@ -30,7 +30,11 @@ describe('proxiesSx extension', () => {
   it('getPricing calls correct endpoint', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ shared: { trafficPerGB: 4 }, currency: 'USDC' }),
+      json: () => Promise.resolve({
+        shared: { tier: 'shared', portPriceMonthly: 0, trafficPricePerGB: 4, portPricePerHour: 0, portPricePerDay: 0 },
+        networks: [{ network: 'base', chainId: 'eip155:8453', enabled: true, usdcAddress: 'asset', recipientAddress: 'recipient' }],
+        minTrafficGB: 0.1, minDurationSeconds: 3600, maxDurationSeconds: 2592000,
+      }),
     });
 
     const ext = proxiesSx();
@@ -38,7 +42,9 @@ describe('proxiesSx extension', () => {
     const pricing = await proxy.getPricing();
 
     expect(mockFetch).toHaveBeenCalledWith('https://api.proxies.sx/v1/x402/pricing');
-    expect(pricing.shared.trafficPerGB).toBe(4);
+    expect(pricing.shared.trafficPricePerGB).toBe(4);
+    expect(pricing.networks[0].chainId).toBe('eip155:8453');
+    expect(pricing.maxDurationSeconds).toBe(2592000);
   });
 
   it('getCountries calls correct endpoint with tier', async () => {

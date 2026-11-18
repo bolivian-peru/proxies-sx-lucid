@@ -1,7 +1,7 @@
 {
   "name": "@proxies-sx/lucid-agents",
   "version": "1.0.0",
-  "description": "Lucid Agents extension for Proxies.sx mobile proxies — x402 USDC micropayments, 6 countries, HTTP/SOCKS5",
+  "description": "Lucid Agents extension for Proxies.sx mobile proxies — x402 USDC micropayments, current country availability, HTTP/SOCKS5",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",

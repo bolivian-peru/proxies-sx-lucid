@@ -67,13 +67,28 @@ export interface SessionInfo {
 }
 
 /** Pricing info from GET /v1/x402/pricing */
+export interface TierPricing {
+  tier: string;
+  portPriceMonthly: number;
+  trafficPricePerGB: number;
+  portPricePerHour: number;
+  portPricePerDay: number;
+}
+
 export interface PricingInfo {
-  shared: { portPerMonth: number; trafficPerGB: number };
-  private: { portPerMonth: number; trafficPerGB: number };
-  currency: string;
-  networks: string[];
+  shared: TierPricing;
+  /** Deprecated by the API. Current dedicated-port pricing contains only the shared rate. */
+  private?: TierPricing;
+  networks: Array<{
+    network: string;
+    chainId: string;
+    enabled: boolean;
+    usdcAddress: string;
+    recipientAddress: string;
+  }>;
   minTrafficGB: number;
   minDurationSeconds: number;
+  maxDurationSeconds: number;
 }
 
 /** Available country */
