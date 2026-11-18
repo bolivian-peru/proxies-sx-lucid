@@ -11,12 +11,11 @@ This extension adds `.proxy` to your Lucid agent runtime, giving any AI agent th
 | Feature | Detail |
 |---------|--------|
 | IPs | Real 4G/5G mobile carrier IPs |
-| Countries | US, DE, GB, FR, ES, PL |
+| Countries | Read the current [dedicated-port inventory](https://api.proxies.sx/v1/x402/countries) with `getCountries()`. |
 | Protocols | HTTP + SOCKS5 |
-| Pricing | $4/GB |
+| Pricing | Read the [dedicated-port pricing](https://api.proxies.sx/v1/x402/pricing) and check the quote for your request. |
 | Payment | USDC on Base or Solana |
-| Settlement | ~2s Base, ~400ms Solana |
-| Min purchase | $0.40 (0.1 GB) |
+| Minimum traffic | `minTrafficGB` in the pricing response |
 
 ## Install
 
@@ -68,10 +67,7 @@ const result = await agent.proxy.purchaseProxy(txHash, {
   trafficGB: 1,
 });
 
-console.log(result.proxy.http);     // http://user:pass@server:port
-console.log(result.proxy.socks5);   // socks5://user:pass@server:port
-console.log(result.proxy.expiresAt);
-console.log(result.management.sessionToken); // For session management
+// Store the returned proxy credentials and session token privately.
 ```
 
 ## Payment Flow
@@ -103,7 +99,7 @@ proxiesSx({
   defaultCountry: 'US',          // Default country code
   defaultTrafficGB: 1,           // Default traffic allocation
   defaultDurationSeconds: 3600,  // Default session duration (1 hour)
-  defaultTier: 'shared',         // 'shared' or 'private' — both $4/GB
+  defaultTier: 'shared',         // Dedicated-port tier
   defaultNetwork: 'solana',      // 'base' or 'solana'
 })
 ```
@@ -156,18 +152,20 @@ List available countries with device counts.
 
 ```typescript
 const countries = await agent.proxy.getCountries('shared');
-// [{ code: 'US', name: 'United States', availableDevices: 45 }, ...]
+const available = countries.filter(country => country.availableDevices > 0);
 ```
 
 ### `agent.proxy.getPricing()`
 
-Get current pricing info.
+Read pricing for the dedicated-port API. Version 1.0.0 returns the live JSON response directly. Its published TypeScript declarations use older field names. In JavaScript:
 
-```typescript
+```js
 const pricing = await agent.proxy.getPricing();
-// pricing.shared.trafficPerGB → 4
-// (all traffic is $4/GB — the response carries no separate private price)
+console.log(pricing.shared.trafficPricePerGB);
+console.log(pricing.minTrafficGB);
 ```
+
+The [live response](https://api.proxies.sx/v1/x402/pricing) has a `shared` rate and a list of network objects.
 
 ## Standalone Client
 
@@ -186,7 +184,7 @@ const proxy = await client.purchaseProxy('tx_hash_here', { country: 'US', traffi
 ## Why Mobile Proxies?
 
 Mobile IPs are the gold standard for web access:
-- **Never blocked** — websites can't ban carrier IP ranges without blocking real users
+- **Country selection** — use a country with available devices for regional testing
 - **Real device fingerprints** — genuine mobile carrier ASNs
 - **IP rotation** — rotate to a new IP via API call
 
@@ -195,7 +193,7 @@ Mobile IPs are the gold standard for web access:
 - [Proxies.sx Agents](https://agents.proxies.sx) — Service landing page
 - [x402 Protocol](https://x402.org) — HTTP 402 payment standard
 - [Lucid Agents](https://github.com/daydreamsai/lucid-agents) — Agent framework
-- [API Docs](https://api.proxies.sx/api) — Swagger documentation
+- [Dedicated-port API guide](https://agents.proxies.sx/marketplace/skill.md)
 
 ## License
 
